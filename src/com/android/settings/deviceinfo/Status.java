@@ -191,11 +191,9 @@ public class Status extends PreferenceActivity {
 
         mRes = getResources();
         sUnknown = mRes.getString(R.string.device_info_default);
-
         if (UserHandle.myUserId() == UserHandle.USER_OWNER) {
             mPhone = PhoneFactory.getDefaultPhone();
         }
-
         // Note - missing in zaku build, be careful later...
         mSignalStrength = findPreference(KEY_SIGNAL_STRENGTH);
         mUptime = findPreference("up_time");
@@ -334,8 +332,11 @@ public class Status extends PreferenceActivity {
 
     private void updateNetworkType() {
         // Whether EDGE, UMTS, etc...
-        setSummaryText(KEY_NETWORK_TYPE, mTelephonyManager.getNetworkTypeName() +
-                ":" + mTelephonyManager.getNetworkType());
+        String networktype = null;
+        if (TelephonyManager.NETWORK_TYPE_UNKNOWN != mTelephonyManager.getNetworkType()) {
+            networktype = mTelephonyManager.getNetworkTypeName();
+        }
+        setSummaryText(KEY_NETWORK_TYPE, networktype);
     }
 
     private void updateDataState() {
