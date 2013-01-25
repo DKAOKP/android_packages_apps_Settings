@@ -1059,7 +1059,7 @@
         </activity-alias>
 
         <activity android:name=".AppPicker" android:label="@string/select_application"
-                android:theme="@android:style/Theme.Holo.Dialog" />
+                android:theme="@*android:style/Theme.Holo.Dialog" />
 
         <activity android:name="Settings$UsbSettingsActivity"
                 android:label="@string/storage_title_usb"
@@ -1178,7 +1178,7 @@
 
         <activity android:name="ActivityPicker"
                 android:label="@string/activity_picker_label"
-                android:theme="@*android:style/Theme.Dialog.Alert"
+                android:theme="@*android:style/Theme.Holo.Dialog"
                 android:finishOnCloseSystemDialogs="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK_ACTIVITY" />
@@ -1297,7 +1297,7 @@
         <!-- Standard picker for widgets -->
         <activity android:name="AppWidgetPickActivity"
                 android:label="@string/widget_picker_title"
-                android:theme="@*android:style/Theme.Holo.Dialog.Alert"
+                android:theme="@*android:style/Theme.Holo.Dialog"
                 android:finishOnCloseSystemDialogs="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_PICK" />
@@ -1306,7 +1306,7 @@
         </activity>
 
         <activity android:name="AllowBindAppWidgetActivity"
-                android:theme="@*android:style/Theme.Holo.Dialog.Alert"
+                android:theme="@*android:style/Theme.Holo.Dialog"
                 android:finishOnCloseSystemDialogs="true"
                 android:excludeFromRecents="true">
             <intent-filter>
@@ -1440,7 +1440,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.app.action.START_ENCRYPTION" />
-                <category android:name="android.intent.category.DEFAULT" /> />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.CryptKeeperSettings" />
@@ -1464,6 +1464,14 @@
                 android:resource="@id/wireless_settings" />
         </activity>
 
+		<activity android:name="Settings$AnonymousStatsActivity"
+                android:label="@string/anonymous_statistics_title"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:clearTaskOnLaunch="true">
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.aokpstats.AnonymousStats" />
+        </activity>
+
         <receiver android:name=".widget.SettingsAppWidgetProvider"
                 android:label="@string/gadget_title"
                 android:exported="true"
@@ -1480,6 +1488,22 @@
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_info" />
         </receiver>
+        
+        <receiver android:name=".aokpstats.ReportingServiceManager"
+            android:enabled="true"
+            android:exported="false"
+            android:label="ReportingServiceManager">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:label="ReportingService"
+            android:enabled="true"
+            android:exported="false"
+            android:name=".aokpstats.ReportingService">
+        </service>
 
         <receiver android:name=".bluetooth.BluetoothDiscoverableTimeoutReceiver">
             <intent-filter>

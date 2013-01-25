@@ -120,7 +120,6 @@ public class BrightnessPreference extends SeekBarDialogPreference implements
             mCheckBox.setChecked(mAutomaticMode);
             mSeekBar.setEnabled(!mAutomaticMode || USE_SCREEN_AUTO_BRIGHTNESS_ADJUSTMENT);
         } else {
-            mCheckBox.setVisibility(View.GONE);
             mSeekBar.setEnabled(true);
         }
         mSeekBar.setOnSeekBarChangeListener(this);

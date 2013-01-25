@@ -120,7 +120,12 @@ public class Settings extends PreferenceActivity
             R.id.system_section,
             R.id.date_time_settings,
             R.id.about_settings,
-            R.id.accessibility_settings
+            R.id.accessibility_settings,
+            R.id.quick_links,
+            R.id.rom_control,
+            R.id.themes,
+            R.id.performance,
+            R.id.advanced_settings
     };
 
     private SharedPreferences mDevelopmentPreferences;
@@ -414,7 +419,7 @@ public class Settings extends PreferenceActivity
     private void updateHeaderList(List<Header> target) {
         final boolean showDev = mDevelopmentPreferences.getBoolean(
                 DevelopmentSettings.PREF_SHOW,
-                android.os.Build.TYPE.equals("eng"));
+                android.os.Build.TYPE.equals("eng") || android.os.Build.TYPE.equals("userdebug"));
         int i = 0;
 
         mHeaderIndexMap.clear();
@@ -424,6 +429,9 @@ public class Settings extends PreferenceActivity
             int id = (int) header.id;
             if (id == R.id.operator_settings || id == R.id.manufacturer_settings) {
                 Utils.updateHeaderToSpecificActivityFromMetaDataOrRemove(this, target, header);
+            } else if (id == R.id.advanced_settings) {
+                if (!needsAdvancedSettings())
+                    target.remove(header);
             } else if (id == R.id.wifi_settings) {
                 // Remove WiFi Settings if WiFi service is not available.
                 if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI)) {
@@ -538,6 +546,10 @@ public class Settings extends PreferenceActivity
             mListeningToAccountUpdates = true;
         }
         return headerIndex;
+    }
+
+    private boolean needsAdvancedSettings() {
+        return getResources().getBoolean(R.bool.has_advanced_settings);
     }
 
     private void getMetaData() {
@@ -833,4 +845,5 @@ public class Settings extends PreferenceActivity
     public static class TextToSpeechSettingsActivity extends Settings { /* empty */ }
     public static class AndroidBeamSettingsActivity extends Settings { /* empty */ }
     public static class WifiDisplaySettingsActivity extends Settings { /* empty */ }
+    public static class AnonymousStatsActivity extends Settings { /* empty */ }
 }
